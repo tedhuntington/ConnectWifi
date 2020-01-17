@@ -3,8 +3,10 @@
 #include <QNetworkConfigurationManager>
 #include "connectwindow.h"
 
+
+
 int main(int argc, char *argv[])
-{    
+{
     qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -22,7 +24,6 @@ int main(int argc, char *argv[])
 
     ConnectWindow *cw = new ConnectWindow();
     cw->runConnectWindow();
-
 
     return app.exec();
 }

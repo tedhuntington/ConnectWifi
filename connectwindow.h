@@ -6,6 +6,9 @@
 #include <QString>
 
 
+#define CONF_FOLDER     "WorldPro"
+
+
 class ConnectWindow
 {
 public:
