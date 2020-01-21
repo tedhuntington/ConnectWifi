@@ -22,8 +22,8 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
     engine.load(url);
 
-    ConnectWindow *cw = new ConnectWindow();
-    cw->runConnectWindow();
+    ConnectWindow *connectwindow = new ConnectWindow();
+    connectwindow->runConnectWindow();
 
     return app.exec();
 }

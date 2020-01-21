@@ -3,26 +3,19 @@
 #include <pwd.h>
 #include "connectwindow.h"
 
-ConnectWindow::ConnectWindow()
-{
 
+ConnectWindow::ConnectWindow(QObject *parent) : QObject(parent), m_rootView(nullptr)
+{
+    //todo: add hourglass or pop up "Scanning..."
+    m_scanAPs_timer = new QTimer(this);
+    connect(m_scanAPs_timer, SIGNAL(timeout()), this, SLOT(TimerEvent()));
+    m_scanAPs_timer->start(200); //start scan wifi timer
 }
 
-
-void ConnectWindow::runConnectWindow()
+void ConnectWindow::TimerEvent(void)
 {
-    m_rootView = new QQuickView;
-    m_rootView->setSource(QUrl(QStringLiteral("qrc:///main.qml")));
-    m_rootView->setResizeMode(QQuickView::SizeRootObjectToView);
-    //m_rootView->showFullScreen();
-    m_rootView->showNormal();
-
     QObject*obj = m_rootView->rootObject();
-    QQuickItem*item = qobject_cast<QQuickItem*>(obj);
-
-    //connect qml signals
-    //QObject::connect(item,SIGNAL(pushStartRequest()), this,SLOT(onPushStartRequest()));
-    //QObject::connect(item,SIGNAL(escapeKeyExit()), this,SLOT(onEscapeKeyExit()));
+    //QQuickItem*item = qobject_cast<QQuickItem*>(obj);
 
 
     //scan wifi APs available
@@ -50,11 +43,14 @@ void ConnectWindow::runConnectWindow()
             QTextStream in(&file);
             int numline;
             numline=0;
+            QMetaObject::invokeMethod(obj, "clearRecord", Qt::DirectConnection);
             while (!in.atEnd())
             {
                QString line = in.readLine();
+               line = line.replace("ESSID:","");
                //add ESSID to scroll area
                //QMetaObject::invokeMethod(obj, "addRecord", Q_ARG(QString, line));
+               //line = '<style="font-size:20pt;">' + line + '</style>';
                QMetaObject::invokeMethod(obj, "addRecord", Qt::DirectConnection,Q_ARG(QVariant, line.trimmed()));
 
                //obj->setProperty("scrollView", angle);
@@ -82,6 +78,25 @@ void ConnectWindow::runConnectWindow()
     file.remove();
     //return(0);
     }  //if openrv
+    m_scanAPs_timer->stop(); //restart timer for a 5 second interval
+    m_scanAPs_timer->start(5000); //start scan wifi timer
+
+}
+
+void ConnectWindow::runConnectWindow()
+{
+    m_rootView = new QQuickView;
+    m_rootView->setSource(QUrl(QStringLiteral("qrc:///main.qml")));
+    m_rootView->setResizeMode(QQuickView::SizeRootObjectToView);
+    //m_rootView->showFullScreen();
+    m_rootView->showNormal();
+
+
+    //connect qml signals
+    //QObject::connect(item,SIGNAL(pushStartRequest()), this,SLOT(onPushStartRequest()));
+    //QObject::connect(item,SIGNAL(escapeKeyExit()), this,SLOT(onEscapeKeyExit()));
+
+
 
 
 }
