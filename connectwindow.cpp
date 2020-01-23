@@ -17,6 +17,7 @@ void ConnectWindow::TimerEvent(void)
     QObject*obj = m_rootView->rootObject();
     //QQuickItem*item = qobject_cast<QQuickItem*>(obj);
 
+    //call ScanAPs thread
 
     //scan wifi APs available
     const char *homedir;

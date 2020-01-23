@@ -1,0 +1,9 @@
+/usr/bin
+/etc/systemd/system
+/etc/X11/Xsession.d
+/etc/init.d
+/usr/share/applications
+/usr/share/ConnectWiFi
+/usr/share/ConnectWiFi/icons
+
+

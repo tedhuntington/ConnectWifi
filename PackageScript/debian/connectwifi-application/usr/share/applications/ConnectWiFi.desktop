@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=18.0
+Type=Application
+Terminal=false
+Exec=/usr/bin/ConnectWiFi
+Name=ConnectWiFi
+Icon=/usr/share/ConnectWiFi/icons/ConnectWiFi.png
+
+Name[en_US]=ConnectWiFi.desktop

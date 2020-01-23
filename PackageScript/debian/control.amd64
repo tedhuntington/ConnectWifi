@@ -1,0 +1,13 @@
+Source: connectwifi-application
+Section: utils
+Priority: optional
+Maintainer: Ted Huntington <tedhuntington@gmail.com>
+Build-Depends: debhelper (>= 4.0.0)
+Standards-Version: 1.00.1019
+
+Package: connectwifi-application
+Architecture: all
+Depends: libqt5x11extras5 (>= 5.9.2), libqt5quick5 (>= 5.9.2), qml-module-qtgraphicaleffects(>= 5.9.2), libqt5sql5 (>= 5.9.2), qtvirtualkeyboard-plugin(>= 5.9.2), qml-module-qt-labs-folderlistmodel(>= 5.9.2), espeak, qml-module-qtquick-layouts(>= 5.9.2)
+Description: This package is the ConnectWiFi application.
+    SDK_BIN: /usr/bin
+    

@@ -1,0 +1,25 @@
+Format: 1.8
+Date: 22 Jan 2020 18:08:00 -0800
+Source: connectwifi-application
+Binary: connectwifi-application
+Architecture: all
+Version: 1.00.0000
+Distribution: stable
+Urgency: low
+Maintainer: Ted Huntington <tedhuntington@gmail.com>
+Changed-By: Ted Huntington <tedhuntington@gmail.com>
+Description:
+ connectwifi-application - This package is the ConnectWiFi application.
+Changes:
+ connectwifi-application (1.00.0000) stable; urgency=low
+ .
+   * (1.00.1000) Initial release
+Checksums-Sha1:
+ c73d7e081f1e47330b511c01c81f1980a4eca4fb 23928 connectwifi-application_1.00.0000_all.deb
+ 79b8a215d30b7a74dcaf75f69fef4c9c56fccc15 5288 connectwifi-application_1.00.0000_amd64.buildinfo
+Checksums-Sha256:
+ 9435b3d58487478e15a3e7ed39044335c6cfdd11e5d4234183e8bdea3c012f17 23928 connectwifi-application_1.00.0000_all.deb
+ 5de9c51b2d0b8bf829ef5b04ded9090ff2d010636d607e5adaf603eb57239f22 5288 connectwifi-application_1.00.0000_amd64.buildinfo
+Files:
+ a1853249cac92a0efa35c9bbc17dd0c1 23928 utils optional connectwifi-application_1.00.0000_all.deb
+ 9a78b60d536153ddb9a7042a9eccc95e 5288 utils optional connectwifi-application_1.00.0000_amd64.buildinfo
