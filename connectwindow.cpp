@@ -6,16 +6,15 @@
 
 ConnectWindow::ConnectWindow(QObject *parent) : QObject(parent), m_rootView(nullptr)
 {
+
     //todo: add hourglass or pop up "Scanning..."
     m_scanAPs_timer = new QTimer(this);
     connect(m_scanAPs_timer, SIGNAL(timeout()), this, SLOT(TimerEvent()));
-    m_scanAPs_timer->start(200); //start scan wifi timer
 }
 
 void ConnectWindow::TimerEvent(void)
 {
     QObject*obj = m_rootView->rootObject();
-    //QQuickItem*item = qobject_cast<QQuickItem*>(obj);
 
     //call ScanAPs thread
 
@@ -49,6 +48,7 @@ void ConnectWindow::TimerEvent(void)
             {
                QString line = in.readLine();
                line = line.replace("ESSID:","");
+               line = line.replace("\"","");
                //add ESSID to scroll area
                //QMetaObject::invokeMethod(obj, "addRecord", Q_ARG(QString, line));
                //line = '<style="font-size:20pt;">' + line + '</style>';
@@ -85,19 +85,36 @@ void ConnectWindow::TimerEvent(void)
 }
 
 void ConnectWindow::runConnectWindow()
-{
+{    
     m_rootView = new QQuickView;
     m_rootView->setSource(QUrl(QStringLiteral("qrc:///main.qml")));
     m_rootView->setResizeMode(QQuickView::SizeRootObjectToView);
     //m_rootView->showFullScreen();
     m_rootView->showNormal();
 
+    QObject*obj = m_rootView->rootObject();
+    QQuickItem*item = qobject_cast<QQuickItem*>(obj);
+
+    //connect qml signals
+    QObject::connect(item,SIGNAL(escapeKeyExit()), this,SLOT(onEscapeKeyExit()));
+    QObject::connect(item,SIGNAL(connectWiFiButton()), this,SLOT(onConnectWiFiButton()));
+
+    m_scanAPs_timer->start(200); //start scan wifi timer
 
     //connect qml signals
     //QObject::connect(item,SIGNAL(pushStartRequest()), this,SLOT(onPushStartRequest()));
     //QObject::connect(item,SIGNAL(escapeKeyExit()), this,SLOT(onEscapeKeyExit()));
+}
 
 
+void ConnectWindow::onEscapeKeyExit()
+{
+    qApp->exit();
+}
 
+void ConnectWindow::onConnectWiFiButton()
+{
+    //Try to connect to AP
 
+    //qApp->exit();
 }

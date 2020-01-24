@@ -23,6 +23,8 @@ signals:
 
 public slots:
     void TimerEvent();
+    void onEscapeKeyExit();
+    void onConnectWiFiButton();
 
 private:
     QQuickView *m_rootView;

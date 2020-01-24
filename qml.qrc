@@ -3,5 +3,12 @@
         <file>main.qml</file>
         <file>TextButton.qml</file>
         <file>TextBlock.qml</file>
+        <file>images/ConnectWiFi.png</file>
+        <file>images/eye.png</file>
+        <file>connectwindow.cpp</file>
+        <file>connectwindow.h</file>
+        <file>main.cpp</file>
+        <file>moc_connectwindow.cpp</file>
+        <file>moc_predefs.h</file>
     </qresource>
 </RCC>
