@@ -10,7 +10,8 @@ Item {
     width: 800; height: 800
 
     property var ssidList: []
-
+    property var ssid
+    property var password
 
     signal escapeKeyExit()
     signal connectWiFiButton()
@@ -112,6 +113,7 @@ Item {
                         onClicked: {
                             listView.currentIndex = index
                             textInput_SSID.text = ssidList[index]
+                            //root.ssid=ssidList[index]
                         }
                     } //MouseArea
 
@@ -165,6 +167,10 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: listviewRect.bottom
         anchors.topMargin: 38
+        onTextChanged: {
+            root.ssid=textInput_SSID.text
+        }
+
     }
 
     TextInput {
@@ -185,6 +191,9 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: textInput_SSID.bottom
         anchors.topMargin: 20
+        onTextChanged: {
+            root.password=textInput_password.text
+        }
     }
 
     Rectangle {

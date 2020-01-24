@@ -115,6 +115,28 @@ void ConnectWindow::onEscapeKeyExit()
 void ConnectWindow::onConnectWiFiButton()
 {
     //Try to connect to AP
+    const char *homedir;
+
+    homedir = getpwuid(getuid())->pw_dir;
+    char tempfile[1024];
+    snprintf(tempfile,sizeof(tempfile),"%s/%s/epro_wifi_temp.txt",homedir,CONF_FOLDER);
+    char tempstr[300];
+    //ifconfig | grep wlo1  - returns wlo1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+
+    QObject*obj = m_rootView->rootObject();
+
+    QString qssid = obj->property("ssid").toString();
+    QString qpw = obj->property("password").toString();
+
+    const char *ssid = qssid.toStdString().c_str();
+    const char *pw = qpw.toStdString().c_str();
+
+    snprintf(tempstr,sizeof(tempstr),"sudo iwconfig wlo1 essid \"%s\" key \"%s\"",ssid,pw);
+    system(tempstr);
+
+    snprintf(tempstr,sizeof(tempstr),"sudo ifconfig wlo1 up");
+    system(tempstr);
+
 
     //qApp->exit();
 }
