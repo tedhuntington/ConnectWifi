@@ -1,5 +1,6 @@
-connectwifi-application (1.00.0000) stable; urgency=low
+connectwifi-application (1.00.0001) stable; urgency=low
 
   * (1.00.1000) Initial release
+  * (1.00.1001) Added SSID and pw text box, reveal pw button, and connect ap code
 
  -- Ted Huntington <tedhuntington@gmail.com>  22 Jan 2020 18:08:00 -0800 
