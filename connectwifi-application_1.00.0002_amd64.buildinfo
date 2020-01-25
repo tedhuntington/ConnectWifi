@@ -2,16 +2,16 @@ Format: 1.0
 Source: connectwifi-application
 Binary: connectwifi-application
 Architecture: all
-Version: 1.00.0001
+Version: 1.00.0002
 Checksums-Md5:
- 22f99981047c7456a1d01481f1827016 23972 connectwifi-application_1.00.0001_all.deb
+ da534bf4c97ec94568771b12db76f946 28468 connectwifi-application_1.00.0002_all.deb
 Checksums-Sha1:
- ee0fa2c376f4f4017e4548619698629914016618 23972 connectwifi-application_1.00.0001_all.deb
+ 8e879e7bfccabd56ea6ee0fb77a7a0aaf6b05c67 28468 connectwifi-application_1.00.0002_all.deb
 Checksums-Sha256:
- a5e8b92a3bb4f018780ed088bbf8a460def26f91e52c2accc2fd0d1e7cd04a38 23972 connectwifi-application_1.00.0001_all.deb
+ ce268f86339e239456c24b8d5e1864cb98507dbec6efe1fb99ec24cfb82cb6e4 28468 connectwifi-application_1.00.0002_all.deb
 Build-Origin: Ubuntu
 Build-Architecture: amd64
-Build-Date: Thu, 23 Jan 2020 23:14:39 -0800
+Build-Date: Fri, 24 Jan 2020 22:15:12 -0800
 Installed-Build-Depends:
  autoconf (= 2.69-11),
  automake (= 1:1.15.1-3ubuntu2),

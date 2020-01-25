@@ -51,12 +51,16 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = connectwindow.cpp \
-		main.cpp qrc_qml.cpp \
-		moc_connectwindow.cpp
+		main.cpp \
+		scanapthread.cpp qrc_qml.cpp \
+		moc_connectwindow.cpp \
+		moc_scanapthread.cpp
 OBJECTS       = connectwindow.o \
 		main.o \
+		scanapthread.o \
 		qrc_qml.o \
-		moc_connectwindow.o
+		moc_connectwindow.o \
+		moc_scanapthread.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -115,6 +119,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -132,8 +137,11 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		ConnectWiFi.pro connectwindow.h connectwindow.cpp \
-		main.cpp
+		ConnectWiFi.pro commdef.h \
+		connectwindow.h \
+		scanapthread.h connectwindow.cpp \
+		main.cpp \
+		scanapthread.cpp
 QMAKE_TARGET  = ConnectWiFi
 DESTDIR       = 
 TARGET        = ConnectWiFi
@@ -203,6 +211,7 @@ Makefile: ConnectWiFi.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -286,6 +295,7 @@ Makefile: ConnectWiFi.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf:
@@ -326,8 +336,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents qml.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents connectwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents connectwindow.cpp main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents commdef.h connectwindow.h scanapthread.h $(DISTDIR)/
+	$(COPY_FILE) --parents connectwindow.cpp main.cpp scanapthread.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -358,7 +368,9 @@ qrc_qml.cpp: qml.qrc \
 		/usr/lib/qt5/bin/rcc \
 		TextButton.qml \
 		TextBlock.qml \
-		main.qml
+		main.qml \
+		images/ConnectWiFi.png \
+		images/eye.png
 	/usr/lib/qt5/bin/rcc -name qml qml.qrc -o qrc_qml.cpp
 
 compiler_moc_predefs_make_all: moc_predefs.h
@@ -367,13 +379,19 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -std=gnu++11 -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_connectwindow.cpp
+compiler_moc_header_make_all: moc_connectwindow.cpp moc_scanapthread.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_connectwindow.cpp
-moc_connectwindow.cpp: connectwindow.h \
+	-$(DEL_FILE) moc_connectwindow.cpp moc_scanapthread.cpp
+moc_connectwindow.cpp: scanapthread.h \
+		connectwindow.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/tedh/ConnectWiFi -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtQuick -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtQml -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include connectwindow.h -o moc_connectwindow.cpp
+
+moc_scanapthread.cpp: scanapthread.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/tedh/ConnectWiFi -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtQuick -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtQml -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include scanapthread.h -o moc_scanapthread.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -387,17 +405,27 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 
 ####### Compile
 
-connectwindow.o: connectwindow.cpp connectwindow.h
+connectwindow.o: connectwindow.cpp commdef.h \
+		connectwindow.h \
+		scanapthread.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o connectwindow.o connectwindow.cpp
 
-main.o: main.cpp connectwindow.h
+main.o: main.cpp connectwindow.h \
+		scanapthread.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
+
+scanapthread.o: scanapthread.cpp scanapthread.h \
+		commdef.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o scanapthread.o scanapthread.cpp
 
 qrc_qml.o: qrc_qml.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qml.o qrc_qml.cpp
 
 moc_connectwindow.o: moc_connectwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_connectwindow.o moc_connectwindow.cpp
+
+moc_scanapthread.o: moc_scanapthread.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_scanapthread.o moc_scanapthread.cpp
 
 ####### Install
 

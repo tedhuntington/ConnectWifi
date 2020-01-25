@@ -1,39 +1,36 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <pwd.h>
+#include "commdef.h"
 #include "connectwindow.h"
+#include "scanapthread.h"
 
 
 ConnectWindow::ConnectWindow(QObject *parent) : QObject(parent), m_rootView(nullptr)
 {
 
     //todo: add hourglass or pop up "Scanning..."
-    m_scanAPs_timer = new QTimer(this);
-    connect(m_scanAPs_timer, SIGNAL(timeout()), this, SLOT(TimerEvent()));
+    //m_scanAPs_timer = new QTimer(this);
+    m_timerCount=0;
+    m_completedAPScan=false;
+    //connect(m_scanAPs_timer, SIGNAL(timeout()), this, SLOT(TimerEvent()));
+    connect(&thread, SIGNAL(APScanComplete()),this, SLOT(onScanComplete()));
+
+    //start thread
+    thread.scanAPs();
 }
 
-void ConnectWindow::TimerEvent(void)
+void ConnectWindow::onScanComplete(void)
 {
-    QObject*obj = m_rootView->rootObject();
-
-    //call ScanAPs thread
-
-    //scan wifi APs available
+    //char tempstr[300];
+    char tempfile[1024];
     const char *homedir;
 
+    QObject*obj = m_rootView->rootObject();
+
     homedir = getpwuid(getuid())->pw_dir;
-    char tempfile[1024];
     snprintf(tempfile,sizeof(tempfile),"%s/%s/epro_wifi_temp.txt",homedir,CONF_FOLDER);
-    char tempstr[300];
-    //ifconfig | grep wlo1  - returns wlo1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-
-    //snprintf(tempstr,sizeof(tempstr),"sudo iwlist wlo1 scanning | egrep 'Cell |Encryption|Quality|Last beacon|ESSID' > %s",tempfile);
-    snprintf(tempstr,sizeof(tempstr),"sudo iwlist wlo1 scanning | egrep 'ESSID' > %s",tempfile);
-    system(tempstr);
     QFile file(tempfile);
-
-    //QMetaObject::invokeMethod(obj, "next");
-
 
     bool openrv = file.open(QIODevice::ReadOnly);
     if (openrv) {
@@ -77,15 +74,15 @@ void ConnectWindow::TimerEvent(void)
         }  //filesize>0
     file.close();
     file.remove();
-    //return(0);
-    }  //if openrv
-    m_scanAPs_timer->stop(); //restart timer for a 5 second interval
-    m_scanAPs_timer->start(5000); //start scan wifi timer
+    } //if (openrv) {
+    //restart thread
+    thread.scanAPs();
 
 }
 
-void ConnectWindow::runConnectWindow()
-{    
+
+void ConnectWindow::runConnectWindow(void)
+{
     m_rootView = new QQuickView;
     m_rootView->setSource(QUrl(QStringLiteral("qrc:///main.qml")));
     m_rootView->setResizeMode(QQuickView::SizeRootObjectToView);
@@ -99,7 +96,7 @@ void ConnectWindow::runConnectWindow()
     QObject::connect(item,SIGNAL(escapeKeyExit()), this,SLOT(onEscapeKeyExit()));
     QObject::connect(item,SIGNAL(connectWiFiButton()), this,SLOT(onConnectWiFiButton()));
 
-    m_scanAPs_timer->start(200); //start scan wifi timer
+   //m_scanAPs_timer->start(500); //start scan wifi timer
 
     //connect qml signals
     //QObject::connect(item,SIGNAL(pushStartRequest()), this,SLOT(onPushStartRequest()));
@@ -109,6 +106,8 @@ void ConnectWindow::runConnectWindow()
 
 void ConnectWindow::onEscapeKeyExit()
 {
+    //m_scanAPs_timer->stop();
+    //stop thread
     qApp->exit();
 }
 
@@ -130,6 +129,10 @@ void ConnectWindow::onConnectWiFiButton()
 
     const char *ssid = qssid.toStdString().c_str();
     const char *pw = qpw.toStdString().c_str();
+
+
+    snprintf(tempstr,sizeof(tempstr),"sudo rfkill unblock wifi");
+    system(tempstr);
 
     snprintf(tempstr,sizeof(tempstr),"sudo iwconfig wlo1 essid \"%s\" key \"%s\"",ssid,pw);
     system(tempstr);

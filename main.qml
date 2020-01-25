@@ -113,6 +113,7 @@ Item {
                         onClicked: {
                             listView.currentIndex = index
                             textInput_SSID.text = ssidList[index]
+                            //listView.Items[index].Focused=true;
                             //root.ssid=ssidList[index]
                         }
                     } //MouseArea

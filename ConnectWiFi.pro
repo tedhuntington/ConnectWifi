@@ -14,7 +14,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         connectwindow.cpp \
-        main.cpp
+        main.cpp \
+        scanapthread.cpp
 
 RESOURCES += qml.qrc
 
@@ -30,4 +31,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    connectwindow.h
+    commdef.h \
+    connectwindow.h \
+    scanapthread.h

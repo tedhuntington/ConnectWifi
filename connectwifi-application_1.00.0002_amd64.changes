@@ -1,0 +1,27 @@
+Format: 1.8
+Date: 22 Jan 2020 18:08:00 -0800
+Source: connectwifi-application
+Binary: connectwifi-application
+Architecture: all
+Version: 1.00.0002
+Distribution: stable
+Urgency: low
+Maintainer: Ted Huntington <tedhuntington@gmail.com>
+Changed-By: Ted Huntington <tedhuntington@gmail.com>
+Description:
+ connectwifi-application - This package is the ConnectWiFi application.
+Changes:
+ connectwifi-application (1.00.0002) stable; urgency=low
+ .
+   * (1.00.1000) Initial release
+   * (1.00.1001) Added SSID and pw text box, reveal pw button, and connect ap code
+   * (1.00.1002) Put AP scan into thread
+Checksums-Sha1:
+ 8e879e7bfccabd56ea6ee0fb77a7a0aaf6b05c67 28468 connectwifi-application_1.00.0002_all.deb
+ 0fc1936c1e38859dd073aa60784ac09606811899 5288 connectwifi-application_1.00.0002_amd64.buildinfo
+Checksums-Sha256:
+ ce268f86339e239456c24b8d5e1864cb98507dbec6efe1fb99ec24cfb82cb6e4 28468 connectwifi-application_1.00.0002_all.deb
+ ba74f743c6b6234efbb77f450873e9ea513678701700d7a0f2bde2f53446544c 5288 connectwifi-application_1.00.0002_amd64.buildinfo
+Files:
+ da534bf4c97ec94568771b12db76f946 28468 utils optional connectwifi-application_1.00.0002_all.deb
+ 56cb5f9ab9b2edd78cd6446d3685e6ee 5288 utils optional connectwifi-application_1.00.0002_amd64.buildinfo
